@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:weightSum="1">
+
+    <ImageView
+        android:layout_width="203dp"
+        android:layout_height="113dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/logo"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.13" />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="ENTERING DATA"
+        android:id="@+id/btnInsertData"
+        android:background="@drawable/drawable_button"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/white" />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="EDIT DATA"
+        android:id="@+id/btnEdit"
+        android:background="@drawable/drawable_button"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/white" />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="EYE EXAMINATIONS"
+        android:id="@+id/btnEyeExam"
+        android:background="@drawable/drawable_button"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/white" />
+
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="MOGLOBIN"
+        android:id="@+id/btnMoglobin"
+        android:background="@drawable/drawable_button"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/white" />
+
+    <Button
+        android:layout_width="247dp"
+        android:layout_height="wrap_content"
+        android:text="SHOW GRAPH"
+        android:id="@+id/btnShowGraph"
+        android:background="@drawable/drawable_button"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/white" />
+
+    <Button
+        android:layout_width="247dp"
+        android:layout_height="wrap_content"
+        android:text="LOG OUT"
+        android:id="@+id/btnLogOut"
+        android:background="@drawable/drawable_button"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/white" />
+
+</LinearLayout>
