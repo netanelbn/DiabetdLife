@@ -1,31 +1,4 @@
-package com.parse.DiabetsApplication;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-
-import com.parse.DiabetsApplication.R;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class forgets extends ActionBarActivity {
 

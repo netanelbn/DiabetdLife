@@ -1,25 +1,4 @@
-package com.parse.DiabetsApplication;
 
-import android.app.AlertDialog;
-import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TimePicker;
-
-import com.parse.DiabetsApplication.R;
-import com.parse.ParseAnalytics;
-import com.parse.ParseObject;
-
-import java.util.Calendar;
-import java.util.Date;
 
 public class register extends ActionBarActivity {
 
@@ -27,7 +6,7 @@ public class register extends ActionBarActivity {
     Button btnRegister;
     TextView txtLink;
 
-    /** This integer will uniquely define the dialog to be used for displaying time picker.*/
+    
     static final int TIME_DIALOG_ID = 0;
 
     @Override
