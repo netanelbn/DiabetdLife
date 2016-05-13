@@ -1,0 +1,298 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="nvp.com.hpcli_inspection.MainActivity"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:background="#fff">
+
+
+        <!--  Header  Starts-->
+        <LinearLayout android:id="@+id/header"
+            android:layout_width="fill_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/header_gradient"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:id="@+id/imgBack"
+                android:layout_marginLeft="10dp"
+                android:src="@android:drawable/ic_menu_revert" />
+
+            <!-- Logo Start-->
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="עדכון פרטים אישיים:"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:id="@+id/textView"
+                android:textColor="@color/white"
+                android:textSize="30dp" />
+
+            <!-- Logo Ends -->
+        </LinearLayout>
+
+       
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header">
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/ripple_material_light"
+            android:padding="10dip"
+            >
+
+
+            <!-- Full Name Label -->
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="שם מלא:"
+                android:id="@+id/textView10" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/drawable_login_edittext"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/etxtEName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""
+                    android:password="false"
+                    android:singleLine="true"
+                    android:textColorHighlight="#ffffff"
+                    android:theme="@style/EditTextTheme"
+                    android:background="#ffffff"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="7dp" />
+
+            </LinearLayout>
+
+            
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:layout_marginTop="5dp"
+                android:text="סיסמא חדשה:"
+                android:id="@+id/textView9" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/drawable_login_edittext"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/etxtEPassWord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""
+                    android:password="true"
+                    android:singleLine="true"
+                    android:textColorHighlight="#ffffff"
+                    android:theme="@style/EditTextTheme"
+                    android:background="#ffffff"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="7dp" />
+
+            </LinearLayout>
+
+           
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="כתובת מגורים:"
+                android:layout_marginTop="5dp"
+                android:id="@+id/textView13" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/drawable_login_edittext"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/etxtEAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""
+                    android:password="false"
+                    android:singleLine="true"
+                    android:textColorHighlight="#ffffff"
+                    android:theme="@style/EditTextTheme"
+                    android:background="#ffffff"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="7dp" />
+
+            </LinearLayout>
+
+            
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:layout_marginTop="5dp"
+                android:text="זמן ארוחת בוקר:"
+                android:id="@+id/textView8" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/drawable_login_edittext"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/etxtEBreak"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""
+                    android:password="false"
+                    android:singleLine="true"
+                    android:inputType="time"
+                    android:textColorHighlight="#ffffff"
+                    android:theme="@style/EditTextTheme"
+                    android:background="#ffffff"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="7dp" />
+
+            </LinearLayout>
+
+            
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="זמן ארוחת צהרים:"
+                android:layout_marginTop="5dp"
+                android:id="@+id/textView7" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/drawable_login_edittext"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/etxtELunch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""
+                    android:password="false"
+                    android:singleLine="true"
+                    android:inputType="time"
+                    android:textColorHighlight="#ffffff"
+                    android:theme="@style/EditTextTheme"
+                    android:background="#ffffff"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="7dp" />
+
+            </LinearLayout>
+
+            
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="זמן ארוחת ערב:"
+                android:layout_marginTop="5dp"
+                android:id="@+id/textView6" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/drawable_login_edittext"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/etxtEDinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""
+                    android:password="false"
+                    android:singleLine="true"
+                    android:inputType="time"
+                    android:textColorHighlight="#ffffff"
+                    android:theme="@style/EditTextTheme"
+                    android:background="#ffffff"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="7dp" />
+
+            </LinearLayout>
+
+            
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center">
+
+                <Button android:id="@+id/btnEUpdate"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dip"
+                    android:text="אישור"
+                    android:background="@drawable/drawable_button"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <!-- Link to Login Screen -->
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+        <!-- Registration Form Ends -->
+    </RelativeLayout>
+
+</LinearLayout>
