@@ -1,0 +1,85 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:background="#fff">
+
+        <!--  Header  Starts-->
+        <LinearLayout android:id="@+id/header"
+            android:layout_width="fill_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/header_gradient"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:gravity="center">
+
+
+            <!-- Logo Start-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="הוראות לאפליקציה"
+                android:id="@+id/textView"
+                android:textColor="@color/white"
+                android:textSize="25dp" />
+
+            <!-- Logo Ends -->
+        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:id="@+id/imgBack"
+            android:layout_marginLeft="5dp"
+            android:src="@android:drawable/ic_menu_revert" />
+
+        <!-- Registration Form -->
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dip"
+            android:layout_below="@id/header">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="חולי סכרת מתוקים!
+ברוכים הבאים לאפליקציית חיי הסכרת.
+באפליקציה אנו יכולים לבחור בעדכון פרטים אישיים ושמה לעדכן את הארוחות שלנו ביום:
+בוקר,צהרים וערב.
+אנו נקבל תזכורות בשעת הארוחה הנתונה לביצוע בדיקת סוכר ו-2 שעות לאחר הארוחה לבדיקה חוזרת.
+לבדיקת סוכר נבחר ב-הכנס בדיקת סוכר ונרשום את הפרטים המתאימים לבדיקה.
+בבדיקת A1C ובדיקת עיניים האפליקציה תחשב לנו מתי אנו צריכים להגיע שוב לרופא ותודיע
+לנו בהתאם.
+בגרף הסוכר אנו יכולים לראות את עקומת הסוכר שלנו ולראות את התנהגות הסוכר שלנו.
+ישנה אפשרות לשלוח את כל נתוני הסוכר לאימייל הפרטי של המשתמש.
+ובנוסף ישנה אפשרות יכול לבחור תאריך ספציפי ולראות מה קרה בו.
+
+המון בריאות לכולם!"
+                android:textColor="@color/material_blue_grey_800"
+                android:textSize="18dp" />
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center">
+
+
+            </LinearLayout>
+
+            <!-- Link to Login Screen -->
+
+        </LinearLayout>
+        <!-- Registration Form Ends -->
+    </RelativeLayout>
+
+</LinearLayout>

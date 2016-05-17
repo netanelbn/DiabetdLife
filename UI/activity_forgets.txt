@@ -1,0 +1,124 @@
+﻿<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:background="#fff">
+
+
+        <!--  Header  Starts-->
+        <LinearLayout android:id="@+id/header"
+            android:layout_width="fill_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/header_gradient"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:id="@+id/imgBack"
+                android:layout_marginLeft="10dp"
+                android:src="@android:drawable/ic_menu_revert" />
+
+            <!-- Logo Start-->
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="שכחת סיסמא?"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:id="@+id/textView"
+                android:textColor="@color/white"
+                android:textSize="30dp" />
+
+            <!-- Logo Ends -->
+        </LinearLayout>
+
+        
+
+        <!-- Registration Form -->
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/ripple_material_light"
+            android:padding="10dip"
+            android:layout_below="@id/header">
+            <!-- Full Name Label -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView5"
+                    android:src="@drawable/logo" />
+            </LinearLayout>
+
+            <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text=":הכנס כתובת אימייל עדכנית"
+                android:layout_marginTop="20dp" />
+         
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/drawable_login_edittext"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""
+                    android:id="@+id/etxtEmailF"
+                    android:textColorHighlight="#ffffff"
+                    android:theme="@style/EditTextTheme"
+                    android:background="#ffffff"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="7dp"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true" />
+
+            </LinearLayout>
+
+      
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center">
+
+                <Button android:id="@+id/btnSendEmail"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dip"
+                    android:text="שלח סיסמא לאימייל"
+                    android:background="@drawable/drawable_button"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <!-- Link to Login Screen -->
+
+        </LinearLayout>
+        <!-- Registration Form Ends -->
+    </RelativeLayout>
+
+</LinearLayout>
