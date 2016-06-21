@@ -1,17 +1,53 @@
+package com.parse.DiabetsApplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
+import java.util.Random;
 
 public class forgets extends ActionBarActivity {
-
+    //variables Declaration
     EditText etxtEmail;
     Button btnSendEmail;
-    JSONParser jsonParser=new JSONParser();
     String newPass;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Connection between XML component to JAVA class
         setContentView(R.layout.activity_forgets);
-        etxtEmail=(EditText)findViewById(R.id.etxtEmailF);
-        btnSendEmail=(Button)findViewById(R.id.btnSendEmail);
+        etxtEmail = (EditText) findViewById(R.id.etxtEmailF);
+        btnSendEmail = (Button) findViewById(R.id.btnSendEmail);
+
+
+        //Listening back button
+        ImageView imgback = (ImageView) findViewById(R.id.imgBack);
+        imgback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+                finish();
+            }
+        });
+
+
         btnSendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -20,20 +56,19 @@ public class forgets extends ActionBarActivity {
                 query.findInBackground(new FindCallback<ParseObject>() {
                     public void done(List<ParseObject> scoreList, ParseException e) {
                         if (e == null) {
-                            Random rn=new Random();
+                            Random rn = new Random();
 
-                            if(scoreList.size()>0)
-                            {
-                                ParseObject object=scoreList.get(0);
-                                newPass=object.getString("password");
-                                new newPassWord().execute();
-                            }
-                            else
-                            {
+                            if (scoreList.size() > 0) {
+
+                                ParseObject object = scoreList.get(0);
+                                newPass = object.getString("password");
+                                new newPassWord().execute(newPass);
+
+                            } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(forgets.this);
                                 // Specify the list in the dialog using the array
-                                builder.setTitle("Error").setMessage("This email is not register")
-                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                builder.setTitle("שגיאה!").setMessage("האימייל לא רשום במערכת")
+                                        .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
 
                                             }
@@ -54,27 +89,12 @@ public class forgets extends ActionBarActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_forgets, menu);
-        return true;
-    }
+    //class newPassWord extends AsyncTask<String, String, String>
+    //The parameters will be inserted to "doOnBackground" will be String type.
+    //The parameters are passed to "onProgressUpdate" will be String type.
+    //The parameters to be passed to "onPostExecute" will be String type.
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     class newPassWord extends AsyncTask<String, String, String> {
 
         /**
@@ -88,53 +108,40 @@ public class forgets extends ActionBarActivity {
         /**
          * Getting product details in background thread
          */
+
+        //This method is part of the new thread
+        //This is the only method must writing, and the only one who ran in the UI thread.
         protected String doInBackground(String... params) {
 
             // updating UI from Background Thread
             runOnUiThread(new Runnable() {
                 public void run() {
                     // Check for success tag
-                    int success;
                     try {
-                        // Building Parameters
-                        String comment = "Hello user,\n your password is: " + newPass + "\nplease try login for change new.";
-                        List<NameValuePair> params = new ArrayList<NameValuePair>();
-                        params.add(new BasicNameValuePair("email", etxtEmail.getText().toString()));
-                        params.add(new BasicNameValuePair("subject", "diabetsLife-password recover"));
-                        params.add(new BasicNameValuePair("comment", comment));
+                        // recovery mail Parameters
 
-                        // getting product details by making HTTP request
-                        // Note that product details url will use GET request
-                        System.out.println("params is:" + params);
-                        JSONObject json = jsonParser.makeHttpRequest(
-                                Constrants.url_send_email, "GET", params);
+                        String comment = "שלום משתמש יקר!" + "\n" + "הסיסמא שלך היא:" + newPass + "\n" + "אנא נסה להתחבר שוב בבקשה!";
+                        GMailSender sender = new GMailSender(Constrants.username, Constrants.password);
+                        sender.sendMail("אפליקציית סכרת-שחזור סיסמה", comment, Constrants.username, etxtEmail.getText().toString());
 
-                        // check your log for json response
-                        Log.d("Single Product Details", json.toString());
-
-                        // json success tag
-                        success = json.getInt("success");
-
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             });
 
-            return null;
+            return "";
         }
 
 
-        /**
-         * After completing background task Dismiss the progress dialog
-         * *
-         */
+        //OnPostExecute - This method is running after that doInBackground finished his work.
+        // and Receives from doInBackground the results and can process them.
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once got all details
             AlertDialog.Builder builder = new AlertDialog.Builder(forgets.this);
             // Specify the list in the dialog using the array
-            builder.setTitle("success").setMessage("Your password has send to your email. Please check!")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            builder.setTitle("שחזור סיסמה").setMessage("הסיסמה שלך נשלחה בהצלחה לאימייל!")
+                    .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
 
                         }
@@ -143,7 +150,8 @@ public class forgets extends ActionBarActivity {
             //create and show list dialog
             AlertDialog dialog = builder.create();
             dialog.show();
-
         }
     }
+
+
 }

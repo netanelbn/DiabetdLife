@@ -14,10 +14,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import com.parse.FindCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,75 +27,66 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class eye_examinations extends ActionBarActivity
-{
+public class eye_examinations extends ActionBarActivity {
 
     //variables Declaration
-    EditText etxtLastDate,etxtComments,etxtNextDate;
+    EditText etxtLastDate, etxtComments, etxtNextDate;
     Button btnSave;
     String email;
     SharedPreferences.Editor editor;
     SharedPreferences spUser;
-    String Eye_Lastdate,Eye_Nextdate,Eye_Comments;
+    String Eye_Lastdate, Eye_Nextdate, Eye_Comments;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eye_examinations);
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
-       //Creates a file system called USER and there keeping the user's data
+        //Creates a file system called USER and there keeping the user's data
         spUser = getSharedPreferences("USER", Activity.MODE_PRIVATE);
 
         //takes the data  from PARSE and places them in the background app
         // The user's information go right into the app. In case its a user: data fields will be empty
         Eye_Lastdate = spUser.getString("Eye_Lastdate", "");
-        Eye_Nextdate = spUser.getString("Eye_Nextdate","");
+        Eye_Nextdate = spUser.getString("Eye_Nextdate", "");
         Eye_Comments = spUser.getString("Eye_Comments", "");
 
         ImageView imgback = (ImageView) findViewById(R.id.imgBack);
-        imgback.setOnClickListener(new View.OnClickListener()
-        {
+        imgback.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 onBackPressed();
                 finish();
             }
         });
 
-        email=spUser.getString("user","");
-       etxtLastDate=(EditText)findViewById(R.id.etxtDateEye);
+        email = spUser.getString("user", "");
+        etxtLastDate = (EditText) findViewById(R.id.etxtDateEye);
 
         //Opens a window of event dates and press the button last date
-        SetDate setDate=new SetDate(etxtLastDate,eye_examinations.this);
+        SetDate setDate = new SetDate(etxtLastDate, eye_examinations.this);
 
         //We listen to that button because the system needs to know if we've made a change the lastdate
-        etxtLastDate.addTextChangedListener(new TextWatcher()
-        {
+        etxtLastDate.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
-            {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3)
-            {
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
             }
 
-          //This method is called to notify you that, somewhere within editable, the text has been changed.
+            //This method is called to notify you that, somewhere within editable, the text has been changed.
             @Override
-            public void afterTextChanged(Editable editable)
-            {
+            public void afterTextChanged(Editable editable) {
                 String myFormat = "yyyy-MM-dd"; //In which you need put here
                 SimpleDateFormat sdformat = new SimpleDateFormat(myFormat, Locale.US);
-                Date mydate=new Date();
-                try
-                {
+                Date mydate = new Date();
+                try {
                     Calendar c = Calendar.getInstance();
                     c.setTime(sdformat.parse(etxtLastDate.getText().toString()));
 
@@ -101,9 +94,7 @@ public class eye_examinations extends ActionBarActivity
                     c.add(Calendar.MONTH, 6);
                     mydate = new Date(c.getTimeInMillis());
                     etxtNextDate.setText(sdformat.format(mydate));
-                }
-                catch (ParseException e)
-                {
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
@@ -112,9 +103,9 @@ public class eye_examinations extends ActionBarActivity
         });
 
         //Connects the XML file to a file with Java
-        etxtNextDate=(EditText)findViewById(R.id.etxtNextDate);
-        etxtComments=(EditText)findViewById(R.id.etxtCommentEye);
-        btnSave=(Button)findViewById(R.id.btnSaveEye);
+        etxtNextDate = (EditText) findViewById(R.id.etxtNextDate);
+        etxtComments = (EditText) findViewById(R.id.etxtCommentEye);
+        btnSave = (Button) findViewById(R.id.btnSaveEye);
 
         //Receives the user information from thr "USER" file from SharedPreferences
         etxtLastDate.setText(Eye_Lastdate);
@@ -123,11 +114,9 @@ public class eye_examinations extends ActionBarActivity
 
         getReminderEye();
 
-        btnSave.setOnClickListener(new View.OnClickListener()
-        {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 //Puts the user's data into the server PARSE in the "EyeExam" table:
                 ParseObject registers = new ParseObject("EyeExam");
                 registers.put("email", email);
@@ -164,62 +153,34 @@ public class eye_examinations extends ActionBarActivity
         });
 
     }
-  //Method is responsible for eye Reminder
-    public void getReminderEye()
-    {
+
+    //Method is responsible for eye Reminder
+    public void getReminderEye() {
         //go to table "EyeExam" in Parse
         ParseQuery<ParseObject> query = ParseQuery.getQuery("EyeExam");
-       // Sorts the column by date because for 1 user we can have some checks...we want the last check.
+        // Sorts the column by date because for 1 user we can have some checks...we want the last check.
         query.orderByDescending("updatedAt");
         //go to col "email" in  "EyeExam" table in Parse
         query.whereEqualTo("email", email);
-        query.findInBackground(new FindCallback<ParseObject>()
-        {
-            public void done(List<ParseObject> scoreList, com.parse.ParseException e)
-            {
-                if (scoreList.size() != 0)
-                {
-                    ParseObject obj=scoreList.get(0);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> scoreList, com.parse.ParseException e) {
+                if (scoreList.size() != 0) {
+                    ParseObject obj = scoreList.get(0);
 
-                //Sends the next examination date to  SvcReminder class
-                    SvcReminder.eyeExam=obj.getString("nextdate");
+                    //Sends the next examination date to  SvcReminder class
+                    SvcReminder.eyeExam = obj.getString("nextdate");
 
-                //Taking data from the server and places them in the background
+                    //Taking data from the server and places them in the background
                     etxtLastDate.setText(obj.getString("lastdate"));
                     etxtNextDate.setText(obj.getString("nextdate"));
                     etxtComments.setText(obj.getString("comments"));
 
-                }
-                else
-                {
+                } else {
 
                 }
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_eye_examinations, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
-        {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

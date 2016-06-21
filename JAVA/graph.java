@@ -1,4 +1,4 @@
-;
+package com.parse.DiabetsApplication;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,12 +11,8 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.FloatMath;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -41,6 +37,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.FieldPosition;
@@ -51,12 +48,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 
-
-public class graph extends Activity implements OnTouchListener
-{
+public class graph extends Activity implements OnTouchListener {
 
     private XYPlot mySimpleXYPlot;
     private Button btnCapture, btnOption;
@@ -74,95 +68,60 @@ public class graph extends Activity implements OnTouchListener
     String email;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         //Sharedpreferences is an effective and convenient mechanism for saving data.
         // The data are saved in pairs key / value.
         final SharedPreferences spUser = getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        email = spUser.getString("user", "");
 
         //Connection between XML component to JAVA class
-        email=spUser.getString("user","");
         txtMyDate = (EditText) findViewById(R.id.etxtMyDate);
         SetDate setDate = new SetDate(txtMyDate, this);
         imgback = (ImageView) findViewById(R.id.imgBack);
-        imgback.setOnClickListener(new View.OnClickListener()
-        {
+        imgback.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 onBackPressed();
                 finish();
             }
         });
-        txtMyDate.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
-            {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3)
-            {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable)
-            {
-
-            }
-        });
         //get from PARSE the table history
         ParseQuery<ParseObject> query = ParseQuery.getQuery("History");
         // Sorts the results in descending order by the score field
         query.addAscendingOrder("mysort");
         query.whereEqualTo("email", LoginActivity.emailid);
-        query.findInBackground(new FindCallback<ParseObject>()
-        {
-            public void done(List<ParseObject> scoreList, ParseException e)
-            {
-                if (e == null)
-                {
-                    if (scoreList.size() != 0)
-                    {
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> scoreList, ParseException e) {
+                if (e == null) {
+                    if (scoreList.size() != 0) {
                         uploadData(scoreList);
                     }
 
-                }
-                else
-                {
+                } else {
 
                 }
             }
         });
         btnOption = (Button) findViewById(R.id.btnOption);
-        btnOption.setOnClickListener(new View.OnClickListener()
-        {
+        btnOption.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(graph.this);
                 builder.setTitle("אפשרויות");
-                builder.setItems(itemList, new DialogInterface.OnClickListener()
-                {
+                builder.setItems(itemList, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i)
-                    {
+                    public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 0)//the user choosed send to email
                         {
-                            if (!iscapture)
-                            {
+                            if (!iscapture) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(graph.this);
                                 // Specify the list in the dialog using the array
                                 builder.setTitle("שליחת אימייל").setMessage("לפני שליחת בדיקות לאימייל יש לחתוך את התמונה! ")
-                                        .setPositiveButton("אישור", new DialogInterface.OnClickListener()
-                                        {
-                                            public void onClick(DialogInterface dialog, int id)
-                                            {
+                                        .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
 
                                             }
                                         });
@@ -170,9 +129,7 @@ public class graph extends Activity implements OnTouchListener
                                 //create and show list dialog
                                 AlertDialog dialog = builder.create();
                                 dialog.show();
-                            }
-                            else
-                            {
+                            } else {
                                 pDialog = new ProgressDialog(graph.this);
                                 pDialog.setMessage("שולח בדיקות לאימייל אנא המתן...");
                                 //"loading amount" is not measured.
@@ -180,34 +137,26 @@ public class graph extends Activity implements OnTouchListener
                                 //Sets whether this dialog is cancelable with the BACK key
                                 pDialog.setCancelable(true);
                                 pDialog.show();
-                                Thread th = new Thread(new Runnable()
-                                {
+                                Thread th = new Thread(new Runnable() {
                                     @Override
-                                    public void run()
-                                    {
-
-                                        while (imgurl.equals("empty"))
-                                        {
-                                            try
-                                            {
+                                    public void run() {
+                                        //util the pic go into the server Parse
+                                        while (imgurl.equals("empty")) {
+                                            try {
                                                 Thread.sleep(5000);
 
-                                            }
-                                            catch (Exception ae)
-                                            {
+                                            } catch (Exception ae) {
                                             }
                                         }
                                         comment += "\n" + " קישור לתמונת הגרף:" + imgurl;
-                                        new SendToEmail().execute( comment);
+                                        new SendToEmail().execute(comment);
                                     }
                                 });
                                 //to new Runnable() in asyncrone Task
                                 th.start();
 
                             }
-                        }
-                        else
-                        {
+                        } else {
                             //if the user dont send a mail we start a new activity detail(i=1)
                             startActivity(new Intent(graph.this, Detail.class));
                             finish();
@@ -218,13 +167,12 @@ public class graph extends Activity implements OnTouchListener
                 builder.show();
             }
         });
-        btnCapture = (Button) findViewById(R.id.btnCapture);
 
-        btnCapture.setOnClickListener(new View.OnClickListener()
-        {
+
+        btnCapture = (Button) findViewById(R.id.btnCapture);
+        btnCapture.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 //go to picture table when the email equall to email user
                 ParseObject gameScore = new ParseObject("Pictures");
                 gameScore.put("email", LoginActivity.emailid);
@@ -236,11 +184,11 @@ public class graph extends Activity implements OnTouchListener
                 mySimpleXYPlot.setDrawingCacheEnabled(true);
 
                 FileOutputStream fos = null;
-                try
-                {
+                try {
                     //The path of images saved to the user's device
                     //if the second argument is true, then bytes will be written to the end of the file rather than the beginning
                     fos = new FileOutputStream("/sdcard/DCIM/img.jpg", false);
+                    //we have to compress the picture before saving here in the parse server
                     mySimpleXYPlot.getDrawingCache().compress(Bitmap.CompressFormat.JPEG, 100, fos);
                     fos.close();
                     iscapture = true;
@@ -253,17 +201,13 @@ public class graph extends Activity implements OnTouchListener
                     //save the data in PARSE
                     gameScore.put("image", pfile);
 
-                    gameScore.saveInBackground(new SaveCallback()
-                    {
+                    gameScore.saveInBackground(new SaveCallback() {
                         @Override
-                        public void done(ParseException e)
-                        {
+                        public void done(ParseException e) {
                             imgurl = pfile.getUrl().toString();
                         }
                     });
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -274,14 +218,12 @@ public class graph extends Activity implements OnTouchListener
 
     }
 
-  //method that uplad all the Data
-    public void uploadData(List<ParseObject> scoreList)
-    {
+    //method that uplad all the Data
+    public void uploadData(List<ParseObject> scoreList) {
         //Get a reference to the XYplot defined in the XML.
         mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
         if (scoreList.size() <= 0) return;
         ParseObject objH = scoreList.get(0);
-        Random rn = new Random();
         //in the table history we have a clmoun in the name"testtime"
         Date date = objH.getDate("testtime");
         SimpleDateFormat format = new SimpleDateFormat("dd/MM");
@@ -289,38 +231,33 @@ public class graph extends Activity implements OnTouchListener
         int count = scoreList.size();
 
         //1 cell to the title and 2 cell because the for loop count<i
+
         yValues = new Number[count + 2];//new Number[{80,80,90,70,100,120,12]0};
         xValues = new Number[count + 2];//new Number[]{0,0.3,0.6,0.9,1.3,1.6,2};
         xLabels = new String[count + 2];//{"17/11","18/11","19/11","20/11","21/11","22/11"}
         comment = "";
 
         //intilize all the param graph
-        yValues[0] = objH.getInt("bloodsugar");
+        //  yValues[0] = objH.getInt("bloodsugar");
         xValues[0] = 0;
         xLabels[0] = formattedDate;
 
         // Create a Calendar object
         Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        //incrememnt 1 day to data
 
-       //c.add(Calendar.DATE, 1);
-        //for example: May 13 16:51:49
-        date = new Date(c.getTimeInMillis());
         double nextvalue = 0.0;
         double curvalue = 0.0;
-        //postioin to all meals titels
+        //postioin to all meals titels(600 in the xyplot)
         YPositionMetric point = new YPositionMetric(100, YLayoutStyle.ABSOLUTE_FROM_TOP);
         XValueMarker marker;
-        for (int i = 0; i < count; i++)
-        {
+        //often the scorelist.size = 3 per 1 day.
+        for (int i = 0; i < count; i++) {
             objH = scoreList.get(i);
-            yValues[i] = objH.getInt("bloodsugar");
+            yValues[i + 1] = objH.getInt("bloodsugar");
             int type = objH.getInt("mealtime");
             String current = "Date:" + objH.getDate("testtime").toString() + "\n";
             //if we are in the breakfast:
-            if (type == 0)
-            {
+            if (type == 0) {
                 curvalue = nextvalue + 0.3;
                 current += "בארוחת הבוקר\n";
                 marker = new XValueMarker(curvalue, "בוקר");
@@ -331,8 +268,7 @@ public class graph extends Activity implements OnTouchListener
                 mySimpleXYPlot.addMarker(marker);
             }
             //if we are in the lunch:
-            if (type == 1)
-            {
+            if (type == 1) {
                 curvalue = nextvalue + 0.6;
                 current += "בארוחת הצהרים\n";
                 marker = new XValueMarker(curvalue, "צהרים");
@@ -343,10 +279,10 @@ public class graph extends Activity implements OnTouchListener
                 mySimpleXYPlot.addMarker(marker);
             }
             //if we are in the Dinner:
-            if (type == 2)
-            {
+            if (type == 2) {
                 curvalue = nextvalue + 0.9;
                 current += "בארוחת ערב\n";
+                //in the night we preper the array to the next day
                 nextvalue = nextvalue + 1;
                 marker = new XValueMarker(curvalue, "ערב");
                 marker.setTextPosition(point);
@@ -355,7 +291,9 @@ public class graph extends Activity implements OnTouchListener
                 marker.getTextPaint().setColor(Color.BLUE);
                 mySimpleXYPlot.addMarker(marker);
             }
-            current += "רמת הסוכר שלך היא:" + objH.getInt("bloodsugar") + "\n";
+
+
+            current += "רמת הסוכר שלך הייתה:" + objH.getInt("bloodsugar") + "\n";
             current += "אכלת:" + objH.getString("information") + "\n";
             xValues[i + 1] = curvalue;
             c.setTime(date);
@@ -366,14 +304,6 @@ public class graph extends Activity implements OnTouchListener
 
             comment += current + "\n----------------------------------------\n";
         }
-        //after we finish 1 day we past to next dey
-        c.setTime(date);
-        date = new Date(c.getTimeInMillis());
-        formattedDate = format.format(date);
-        yValues[count + 1] = yValues[count];//new Number[]{80,80,90,70,100,120,120};
-        xValues[count + 1] = nextvalue;//Number[]{0,0.3,0.6,0.9,1.3,1.6,2};
-        xLabels[count + 1] = formattedDate;//new String[]{"17/11","18/11","19/11","20/11","21/11","22/11"};
-
 
 
         //make a Market for Y...red color its the difault
@@ -402,7 +332,7 @@ public class graph extends Activity implements OnTouchListener
         // Add xValues and yValues to the xyplot:
         // Color.rgb (int red,int green,int blue)
         //new LineAndPointFormatter(lines color,points color,null,point number)
-        mySimpleXYPlot.addSeries(series,new LineAndPointFormatter(Color.rgb(0, 0, 200), Color.rgb(0, 0, 100), null, new PointLabelFormatter(Color.WHITE)));
+        mySimpleXYPlot.addSeries(series, new LineAndPointFormatter(Color.rgb(0, 0, 200), Color.rgb(0, 0, 100), null, new PointLabelFormatter(Color.WHITE)));
         //step for the x-date
         mySimpleXYPlot.setDomainStepMode(XYStepMode.INCREMENT_BY_VAL);
         mySimpleXYPlot.setDomainStepValue(1);
@@ -416,3 +346,190 @@ public class graph extends Activity implements OnTouchListener
         minXY = new PointF(mySimpleXYPlot.getCalculatedMinX().floatValue(), mySimpleXYPlot.getCalculatedMinY().floatValue());
         maxXY = new PointF(mySimpleXYPlot.getCalculatedMaxX().floatValue(), mySimpleXYPlot.getCalculatedMaxY().floatValue());
     }
+
+
+    static final int NONE = 0;
+    static final int ONE_FINGER_DRAG = 1;
+    static final int TWO_FINGERS_DRAG = 2;
+    int mode = NONE;
+
+    PointF firstFinger;
+    float distBetweenFingers;
+    boolean stopThread = false;
+
+
+    //View arg0: The view the touch event has been dispatched to.
+    //MotionEvent event: The MotionEvent object containing full information about the event.
+    @Override
+    public boolean onTouch(View arg0, MotionEvent event) {
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            //When the user places his first finger on the View..
+            case MotionEvent.ACTION_DOWN: // Start gesture
+                //in case ACTION_DOWN we get the Location of X and Y
+
+                firstFinger = new PointF(event.getX(), event.getY());
+                mode = ONE_FINGER_DRAG;
+                stopThread = true;
+                break;
+
+
+            // ACTION UP - When He picks up the finger from the View (and has only one finger on View)
+            case MotionEvent.ACTION_UP:
+
+                //ACTION_POINTER_UP - when he left the finger from the screen and just 1 finger toche the screen.
+            case MotionEvent.ACTION_POINTER_UP:
+                mode = NONE;
+                break;
+
+            // When the user puts his anther finger (or third or more) on the screen.
+            case MotionEvent.ACTION_POINTER_DOWN: //second finger
+                distBetweenFingers = spacing(event);
+                // the distance check is done to avoid false alarms
+                if (distBetweenFingers > 5f) {
+                    mode = TWO_FINGERS_DRAG;
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (mode == ONE_FINGER_DRAG) {
+                    PointF oldFirstFinger = firstFinger;
+                    firstFinger = new PointF(event.getX(), event.getY());
+                    scroll(oldFirstFinger.x - firstFinger.x);
+                    mySimpleXYPlot.setDomainBoundaries(minXY.x, maxXY.x, BoundaryMode.FIXED);
+                    mySimpleXYPlot.redraw();
+
+                } else if (mode == TWO_FINGERS_DRAG) {
+                    float oldDist = distBetweenFingers;
+                    distBetweenFingers = spacing(event);
+                    zoom(oldDist / distBetweenFingers);
+                    mySimpleXYPlot.setDomainBoundaries(minXY.x, maxXY.x, BoundaryMode.FIXED);
+                    mySimpleXYPlot.redraw();
+                }
+                break;
+        }
+        return true;
+    }
+
+    private void zoom(float scale) {
+        float domainSpan = maxXY.x - minXY.x;
+        float domainMidPoint = maxXY.x - domainSpan / 2.0f;
+        float offset = domainSpan * scale / 2.0f;
+
+        minXY.x = domainMidPoint - offset;
+        maxXY.x = domainMidPoint + offset;
+
+        //Returns the most negative of the two arguments.
+        minXY.x = Math.min(minXY.x, 31);
+        //Returns the most positive of the two arguments.
+        maxXY.x = Math.max(maxXY.x, 0);
+
+        clampToDomainBounds(domainSpan);
+    }
+
+    private void scroll(float pan) {
+        // distance
+        float domainSpan = maxXY.x - minXY.x;
+        float step = domainSpan / mySimpleXYPlot.getWidth();
+        //// distance between finger * % of increment
+        float offset = pan * step;
+        minXY.x = minXY.x + offset;
+        maxXY.x = maxXY.x + offset;
+        clampToDomainBounds(domainSpan);
+    }
+
+    private void clampToDomainBounds(float domainSpan) {
+        float leftBoundary = 0;
+        float rightBoundary = 31;
+        // enforce left scroll boundary:
+        if (minXY.x < leftBoundary) {
+            minXY.x = leftBoundary;
+            maxXY.x = leftBoundary + domainSpan;
+        } else if (maxXY.x > 31) {
+            maxXY.x = rightBoundary;
+            minXY.x = rightBoundary - domainSpan;
+        }
+    }
+
+    //Checking the distance between the two fingers
+    private float spacing(MotionEvent event) {
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return FloatMath.sqrt(x * x + y * y);
+    }
+
+    String[] xLabels;
+
+    class GraphXLabelFormat extends Format {
+
+        @Override
+        public StringBuffer format(Object arg0, StringBuffer arg1, FieldPosition arg2) {
+
+            int parsedInt = Math.round(Float.parseFloat(arg0.toString()));
+            Log.d("test", parsedInt + " " + arg1 + " " + arg2);
+            String labelString = xLabels[parsedInt];
+            arg1.append(labelString);
+            return arg1;
+        }
+
+        @Override
+        public Object parseObject(String arg0, ParsePosition arg1) {
+
+            return Arrays.asList(xLabels).indexOf(arg0);
+        }
+    }
+
+
+    //  The parameters will be inserted to doOnBackground String.
+    //  The parameters are passed to onProgressUpdate be String.
+    //  The parameters to be passed to onPostExecute type String.
+    class SendToEmail extends AsyncTask<String, String, String> {
+
+        //This method is running in the UI thread.
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        //This method is part of the new thread running in--.
+        //This is the only method must implement, and the only one who ran in the UI thread.
+        protected String doInBackground(String... params) {
+
+            // updating UI from Background Thread
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    // Check for success tag
+
+                    try {
+                        GMailSender sender = new GMailSender(Constrants.username, Constrants.password);
+                        sender.sendMail("נתוני בדיקות הסוכר שלך!", comment, Constrants.username, LoginActivity.emailid);
+                    } catch (Exception exp) {
+                        Log.e("SendMail", exp.getMessage(), exp);
+                    }
+                }
+            });
+
+            return null;
+        }
+
+
+        //This method is activated after that doInBackground finished his work.
+// Receives from doInBackground the results and can process them.
+        protected void onPostExecute(String file_url) {
+            pDialog.dismiss();
+            // dismiss the dialog once got all details
+            AlertDialog.Builder builder = new AlertDialog.Builder(graph.this);
+            // Specify the list in the dialog using the array
+            builder.setTitle("שליחת נתונים לאימייל").setMessage("שליחת נתוני הבדיקות לאימייל התבצעה בהצלחה!")
+                    .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+
+            //create and show list dialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        }
+    }
+
+}
