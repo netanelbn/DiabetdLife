@@ -25,7 +25,6 @@ public class Reminder extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
 
-        // Connects the XML file to java file
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         txtTitle.setText(title);
         txtBody = (TextView) findViewById(R.id.txtBody);

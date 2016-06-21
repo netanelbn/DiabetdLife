@@ -41,7 +41,6 @@ public class register extends ActionBarActivity {
 
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
-        //Connection between XML component to JAVA class
 
         etxtName = (EditText) findViewById(R.id.etxtName);
         etxtEmail = (EditText) findViewById(R.id.etxtEmail);
@@ -57,7 +56,6 @@ public class register extends ActionBarActivity {
         btnRegister.setOnClickListener(btnRegisterClick);
         txtLink = (TextView) findViewById(R.id.link_to_login);
 
-        //If the user has been registered
         txtLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,15 +87,12 @@ public class register extends ActionBarActivity {
             String lunchtime = etxtLunch.getText().toString();
             String dinnertime = etxtDinner.getText().toString();
 
-            //Line checks if the user is referred to all the fields of registration
             if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(address) &&
                     !TextUtils.isEmpty(breakfasttime) && !TextUtils.isEmpty(lunchtime) && !TextUtils.isEmpty(dinnertime)) {
-                //go to table "Registers" in parse server
                 ParseObject registers = new ParseObject("Registers");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(register.this);
 
-                //Puts the user data in the server PARSE
                 registers.put("username", etxtName.getText().toString());
                 registers.put("email", etxtEmail.getText().toString());
                 registers.put("password", etxtPassword.getText().toString());
@@ -107,15 +102,12 @@ public class register extends ActionBarActivity {
                 registers.put("dinnertime", etxtDinner.getText().toString());
 
                 ParseACL acl = new ParseACL();
-                //Registration allows access from any device, not just the device did the registration
                 acl.setPublicReadAccess(true);
                 acl.setPublicWriteAccess(true);
                 registers.setACL(acl);
 
-                //Saves the file to the Parse cloud in a background thread.
                 registers.saveInBackground();
 
-                // Specify the list in the dialog using the array
                 builder.setTitle("ברוכים הבאים!").setMessage("נרשמת בהצלחה")
                         .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -123,12 +115,10 @@ public class register extends ActionBarActivity {
                             }
                         });
 
-                //create and show list dialog
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
             } else {
-                //If the user does not note to all the fields
                 Toast.makeText(register.this, "אנא מלא את כל השדות...", Toast.LENGTH_SHORT).show();
             }
 

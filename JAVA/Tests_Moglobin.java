@@ -44,11 +44,8 @@ public class Tests_Moglobin extends ActionBarActivity {
         setContentView(R.layout.activity_tests__moglobin);
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
-        //Creates a file system called USER and there keeping the user's data
         spUser = getSharedPreferences("USER", Activity.MODE_PRIVATE);
 
-        //takes the data  from PARSE and places them in the background app
-        // The user's information go right into the app. In case its a user: data fields will be empty
         Mog_Lastdate = spUser.getString("Mog_Lastdate", "");
         Mog_Nextdate = spUser.getString("Mog_Nextdate", "");
         Mog_Comments = spUser.getString("Mog_Comments", "");
@@ -65,11 +62,9 @@ public class Tests_Moglobin extends ActionBarActivity {
         email = spUser.getString("user", "");
         etxtLastDate = (EditText) findViewById(R.id.etxtDateM);
 
-        //Opens a window of event dates and press the button last date
         SetDate setDate = new SetDate(etxtLastDate, Tests_Moglobin.this);
 
 
-        //We listen to that button because the system needs to know if we've made a change the lastdate
         etxtLastDate.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -82,17 +77,16 @@ public class Tests_Moglobin extends ActionBarActivity {
             }
 
 
-            //This method is called to notify you that, somewhere within editable, the text has been changed.
             @Override
             public void afterTextChanged(Editable editable) {
-                String myFormat = "yyyy-MM-dd"; //In which you need put here
+                String myFormat = "yyyy-MM-dd"; 
                 SimpleDateFormat sdformat = new SimpleDateFormat(myFormat, Locale.US);
                 Date mydate = new Date();
                 try {
                     Calendar c = Calendar.getInstance();
                     c.setTime(sdformat.parse(etxtLastDate.getText().toString()));
 
-                    //Adds another six months before the last date to the next examination test
+
                     c.add(Calendar.MONTH, 3);
                     mydate = new Date(c.getTimeInMillis());
                     etxtNextDate.setText(sdformat.format(mydate));
@@ -104,31 +98,23 @@ public class Tests_Moglobin extends ActionBarActivity {
             }
         });
 
-        //Connects the XML file to a file with Java
+
         etxtNextDate = (EditText) findViewById(R.id.etxtNextDateM);
         etxtComments = (EditText) findViewById(R.id.etxtCommentM);
         btnSave = (Button) findViewById(R.id.btnSaveM);
-
-        //Receives the user information from thr "USER" file from SharedPreferences
         etxtLastDate.setText(Mog_Lastdate);
         etxtNextDate.setText(Mog_Nextdate);
         etxtComments.setText(Mog_Comments);
-
-        //Method is responsible for Moglobin Reminder
         getReminderMoglobin();
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //Puts the user's data into the server PARSE in the "MoglobinExam" table:
                 ParseObject registers = new ParseObject("MoglobinExam");
                 registers.put("email", email);
                 registers.put("lastdate", etxtLastDate.getText().toString());
                 registers.put("nextdate", etxtNextDate.getText().toString());
                 registers.put("comments", etxtComments.getText().toString());
-
-                //Puts the user's data into the "USER" fille
                 editor = spUser.edit();
                 editor.putString("Mog_Lastdate", etxtLastDate.getText().toString());
                 editor.putString("Mog_Nextdate", etxtNextDate.getText().toString());
@@ -137,7 +123,6 @@ public class Tests_Moglobin extends ActionBarActivity {
 
                 registers.saveInBackground();
                 AlertDialog.Builder builder = new AlertDialog.Builder(Tests_Moglobin.this);
-                // Specify the list in the dialog using the array
                 builder.setTitle("בדיקת A1C").setMessage("המידע נשמר בהצלחה!")
                         .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -146,7 +131,6 @@ public class Tests_Moglobin extends ActionBarActivity {
                             }
                         });
 
-                //create and show list dialog
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
@@ -155,24 +139,15 @@ public class Tests_Moglobin extends ActionBarActivity {
 
     public void getReminderMoglobin() {
 
-        //go to table "MoglobinExam" in Parse
         ParseQuery<ParseObject> query = ParseQuery.getQuery("MoglobinExam");
-
-        // Sorts the column by date because for 1 user we can have some checks...we want the last check.
         query.orderByDescending("updatedAt");
-
-        //go to col "email" in  "EyeExam" table in Parse
         query.whereEqualTo("email", email);
 
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> scoreList, com.parse.ParseException e) {
                 if (scoreList.size() != 0) {
                     ParseObject obj = scoreList.get(0);
-
-                    //Sends the next examination date to  SvcReminder class
                     SvcReminder.moglobinExam = obj.getString("nextdate");
-
-                    //Taking data from the server and places them in the background
                     etxtLastDate.setText(obj.getString("lastdate"));
                     etxtNextDate.setText(obj.getString("nextdate"));
                     etxtComments.setText(obj.getString("comments"));

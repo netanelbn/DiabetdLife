@@ -28,7 +28,7 @@ public class SetDate implements View.OnFocusChangeListener, DatePickerDialog.OnD
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)     {
 
 
-        String myFormat = "yyyy-MM-dd"; //In which you need put here
+        String myFormat = "yyyy-MM-dd"; 
         SimpleDateFormat sdformat = new SimpleDateFormat(myFormat, Locale.US);
         myCalendar.set(Calendar.YEAR, year);
         myCalendar.set(Calendar.MONTH, monthOfYear);
@@ -40,7 +40,6 @@ public class SetDate implements View.OnFocusChangeListener, DatePickerDialog.OnD
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        // TODO Auto-generated method stub
         if(hasFocus){
             new DatePickerDialog(ctx, this, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),

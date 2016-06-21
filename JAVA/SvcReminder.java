@@ -13,9 +13,6 @@ import java.util.Date;
 
 public class SvcReminder extends Service {
 
-
-    //variables Declaration
-//    public static int counter = 0;
     public static String eyeExam = "";
     public static String moglobinExam = "";
     public static String breakfast = "";
@@ -38,7 +35,6 @@ public class SvcReminder extends Service {
     }
 
     @Override
-    //bind the intent that comming from the mainActivity
     public IBinder onBind(Intent intent) {
         return new Binder();
     }
@@ -53,9 +49,6 @@ public class SvcReminder extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
 
-        //  counter++;
-
-//Method that build a format of hour for us to compare between the server and know when to send reminders
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = format.format(new Date());
@@ -69,7 +62,6 @@ public class SvcReminder extends Service {
         String formatedTime = strHour + ":" + strMinuter;
 
 
-        //if the time of breakfast and 2 hours next equals to the real time-formatedTime
         if (breakfast.equals(formatedTime) && isBreak) {
             Intent myintent = new Intent(this, Reminder.class);
             myintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -79,7 +71,6 @@ public class SvcReminder extends Service {
             isBreak = false;
         }
 
-        //if the time of breakfast equals to the real time-formatedTime
         if (breakfast_0.equals(formatedTime) && isBreak_0) {
             Intent myintent = new Intent(this, Reminder.class);
             myintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -89,7 +80,6 @@ public class SvcReminder extends Service {
             isBreak_0 = false;
         }
 
-        //if the time of lunch and 2 hours next equals to the real time-formatedTime
         if (lunch.equals(formatedTime) && isLunch) {
             Intent myintent = new Intent(this, Reminder.class);
             myintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -99,7 +89,6 @@ public class SvcReminder extends Service {
             isLunch = false;
         }
 
-        //if the time of lunch equals to the real time-formatedTime
         if (lunch_0.equals(formatedTime) && isLunch_0) {
             Intent myintent = new Intent(this, Reminder.class);
             myintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -109,7 +98,6 @@ public class SvcReminder extends Service {
             isLunch_0 = false;
         }
 
-        //if the time of dinner and 2 hours next equals to the real time-formatedTime
         if (dinner.equals(formatedTime) && isDinner) {
             Intent myintent = new Intent(this, Reminder.class);
             myintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -119,7 +107,6 @@ public class SvcReminder extends Service {
             isDinner = false;
         }
 
-        //if the time of dinner equals to the real time-formatedTime
         if (dinner_0.equals(formatedTime) && isDinner_0) {
             Intent myintent = new Intent(this, Reminder.class);
             myintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -129,7 +116,6 @@ public class SvcReminder extends Service {
             isDinner_0 = false;
         }
 
-        //if the time of eyeExam equals to the real time-formatedDate
         if (eyeExam.equals(formattedDate) && isEye) {
             Intent myintent = new Intent(this, Reminder.class);
             myintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -139,7 +125,6 @@ public class SvcReminder extends Service {
             isEye = false;
         }
 
-        //if the time of moglobinExam equals to the real time-formatedDate
         if (moglobinExam.equals(formattedDate) && isMog) {
             Intent myintent = new Intent(this, Reminder.class);
             myintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -149,7 +134,6 @@ public class SvcReminder extends Service {
             isMog = false;
         }
 
-        //Makes all the flags true before the next day
         if (hour == 23 && minute == 58) {
             isBreak = true;
             isLunch = true;
@@ -177,7 +161,6 @@ public class SvcReminder extends Service {
     }
 
     public void onTaskRemoved(Intent rootIntent) {
-        //Cancel the Alarm
         MainActivity.alarm.cancel(MainActivity.pintent);
         this.stopSelf();
     }

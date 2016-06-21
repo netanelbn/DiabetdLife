@@ -21,9 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-//ActionBarActivity
+//
 public class Detail extends ActionBarActivity {
-    //variables Declaration
     EditText etxtDate;
     ImageView imgSearch;
     TextView txtResult;
@@ -34,13 +33,12 @@ public class Detail extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        //Sharedpreferences is an effective and convenient mechanism for saving data.
-        // The data are saved in pairs key / value.
+        
         final SharedPreferences spUser = getSharedPreferences("USER", Activity.MODE_PRIVATE);
-        //Connection between XML component to JAVA class
+       
         email = spUser.getString("user", "");
         etxtDate = (EditText) findViewById(R.id.etxtDateSearch);
-        //put a keyboars with a date when the user want to find something.
+
         SetDate setDate = new SetDate(etxtDate, this);
         txtResult = (TextView) findViewById(R.id.txtResult);
         imgSearch = (ImageView) findViewById(R.id.imgSearch);
@@ -53,12 +51,10 @@ public class Detail extends ActionBarActivity {
 
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("History");
-        //sorts the results in ascending order by the testtime.
+    
         query.addAscendingOrder("testtime");
-        //sorts the results in ascending order by the mealtime.
-
         query.addAscendingOrder("mealtime");
-        //take the result only when the email equal to the user
+
 
         query.whereEqualTo("email", email);
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -84,8 +80,7 @@ public class Detail extends ActionBarActivity {
             Date date = objH.getDate("testtime");
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String formattedDate = format.format(date);
-            //if choozen date equals to "testtime" in "History" table
-
+           
             if (formattedDate.equals(text)) {
 
                 int type = objH.getInt("mealtime");
