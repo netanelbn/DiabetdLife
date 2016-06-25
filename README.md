@@ -1,1 +1,1 @@
-# DiabetdLife
+# DiabetesLife
